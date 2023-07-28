@@ -3,9 +3,7 @@ version: '3'
 services:
   frontend:
     container_name : frontend_container
-    build:
-      context: client
-      dockerfile: Dockerfile
+    image: sgumbe/yolo-latest:1.1.0
     ports:
       - 3000:3000    
     depends_on:
@@ -13,9 +11,7 @@ services:
     stdin_open: true
   backend:
     container_name: backend_container
-    build:
-      context: backend
-      dockerfile: Dockerfile
+    image: sgumbe/yolo-latest:1.2.0    
     ports: 
       - 5000:5000
     environment:

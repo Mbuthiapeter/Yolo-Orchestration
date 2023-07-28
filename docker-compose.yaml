@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  frontend:
+    container_name : frontend_container
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      frontend-net:
+        ipv4_address: 172.51.0.101
+    depends_on:
+      backend
+    stdin_open: true
+  backend:
+    container_name: backend_container
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports: 
+      - 5000:5000
+    environment:
+      MONGODB_URI: 'mongodb://yolomy:yolomy@172.100.0.101:27017'
+    networks:
+      backend-net:
+        ipv4_address: 172.100.0.100
+      frontend-net:
+        ipv4_address: 172.51.0.100
+    depends_on:
+      - database
+    volumes:
+      - .:/app
+  database:
+    container_name: backend_database    
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: yolomy
+      MONGO_INITDB_ROOT_PASSWORD: yolomy
+    ports:
+      - 27017:27017
+    networks:
+      backend-net:
+        ipv4_address: 172.100.0.101
+    volumes:
+        - backend_volume:/data/db
+networks:
+  backend-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.100.0.0/16
+  frontend-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.51.0.0/16
+volumes:
+  backend_volume:

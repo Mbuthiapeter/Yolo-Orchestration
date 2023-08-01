@@ -3,15 +3,15 @@ version: '3'
 services:
   frontend:
     container_name : frontend_container
-    image: sgumbe/yolo-latest:1.1.0
+    image: pimbuthia/yolo-frontend:1.0.1
     ports:
       - 3000:3000    
     depends_on:
-      - backend
+      - backendy
     stdin_open: true
-  backend:
+  backendy:
     container_name: backend_container
-    image: sgumbe/yolo-latest:1.2.0    
+    image: pimbuthia/yolo-backend:1.0.1   
     ports: 
       - 5000:5000
     environment:

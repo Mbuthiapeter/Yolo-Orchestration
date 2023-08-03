@@ -1,28 +1,37 @@
-version: '3'
+version: '3.9'
 
 services:
   frontend:
     container_name : frontend_container
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     image: pimbuthia/yolo-frontend:1.0.1
     ports:
-      - 3000:3000    
+      - 3000:3000
+    volumes:
+      - ./client:/app
+      - /app/node_modules    
     depends_on:
       - backendy
     stdin_open: true
+
   backendy:
     container_name: backend_container
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     image: pimbuthia/yolo-backend:1.0.1   
     ports: 
-      - 5000:5000
-    environment:
-      MONGODB_URI: 'mongodb://yolomy:yolomy@172.100.0.3:27017'
-    networks:
-      backend-net:
-        ipv4_address: 172.100.0.2     
-    depends_on:
-      - database
+      - 5000:5000    
     volumes:
-      - .:/app
+      - ./backend:/app
+      - ./backend/.env:/app/.env
+      - /app/node_modules 
+    depends_on:
+      - database 
+    networks:
+      - backend-net
   database:
     container_name: backend_database    
     image: mongo:latest
@@ -34,10 +43,6 @@ services:
     networks:
       backend-net:
         ipv4_address: 172.100.0.3
-    
 networks:
   backend-net:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.100.0.0/16
+    driver: bridge

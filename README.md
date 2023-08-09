@@ -1,6 +1,6 @@
 <html>
 <body>
-<h1><b>Ylo-Orchestration Application</b></h1>
+<h1><b>Yolo-Orchestration Application</b></h1>
 <p><b>Yolo</b> is an e-commerce platform.</p>
 <p>This project deploys an application (e-commerce 'YOLO') using Kubernetes orchestration concepts on Google Kubernetes Engine (GKE)</p>
 <h2><b>Features</b></h2>

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: pimbuthia/yolo-backend:1.0.1
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config-map
+                  key: NODE_ENV
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: backend-data
+              mountPath: /data
+      volumes:
+        -
